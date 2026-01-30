@@ -88,6 +88,7 @@ sudo systemctl stop socana
 Примечания:
 - SOCANA читает `.env` из рабочей директории (см. `WorkingDirectory=/home/ezovskikh_a/apps/socana`). Убедись, что `.env` лежит рядом с `main.py`.
 - Если меняешь `.env` — делай `sudo systemctl restart socana`.
+- Если ты используешь `EnvironmentFile=` в unit-файле: учти, что systemd может некорректно прочитать значения с “особыми” символами (например `#`) и в итоге получится `AUTHENTICATIONFAILED` для IMAP. Рекомендуется **не** подгружать `.env` через `EnvironmentFile` и дать SOCANA читать `.env` самостоятельно.
 
 ## Чистый старт (с чистого листа)
 

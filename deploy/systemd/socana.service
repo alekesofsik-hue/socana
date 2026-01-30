@@ -11,8 +11,11 @@ WorkingDirectory=/home/ezovskikh_a/apps/socana
 # Keep logs in journald; also make Python flush logs immediately.
 Environment=PYTHONUNBUFFERED=1
 
-# Optional: load extra environment variables for subprocesses (SOCANA itself reads .env via pydantic-settings).
-EnvironmentFile=-/home/ezovskikh_a/apps/socana/.env
+# IMPORTANT:
+# SOCANA reads `.env` itself via pydantic-settings (from WorkingDirectory).
+# Loading the same file via systemd EnvironmentFile is unnecessary and can break
+# passwords/tokens containing special characters (e.g. '#' may be treated as a comment).
+# If you really need EnvironmentFile, put systemd-safe quoting there (or use a separate file).
 
 ExecStart=/home/ezovskikh_a/apps/socana/.venv/bin/python /home/ezovskikh_a/apps/socana/main.py run
 
