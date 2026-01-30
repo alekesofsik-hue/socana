@@ -1,0 +1,23 @@
+[Unit]
+Description=SOCANA (IMAP -> Telegram)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ezovskikh_a
+WorkingDirectory=/home/ezovskikh_a/apps/socana
+
+# Keep logs in journald; also make Python flush logs immediately.
+Environment=PYTHONUNBUFFERED=1
+
+# Optional: load extra environment variables for subprocesses (SOCANA itself reads .env via pydantic-settings).
+EnvironmentFile=-/home/ezovskikh_a/apps/socana/.env
+
+ExecStart=/home/ezovskikh_a/apps/socana/.venv/bin/python /home/ezovskikh_a/apps/socana/main.py run
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

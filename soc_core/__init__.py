@@ -1,0 +1,2 @@
+"""SOCANA core package."""
+

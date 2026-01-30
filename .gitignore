@@ -1,0 +1,31 @@
+##############################
+# SOCANA - Git ignore
+##############################
+
+# Secrets / local config
+.env
+.env.*
+
+# Virtualenvs
+.venv/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# SQLite / local state
+*.sqlite3
+*.db
+
+# Logs
+*.log
+
+# OS / editor junk
+.DS_Store
+.idea/
+.vscode/
+
