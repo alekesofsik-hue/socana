@@ -90,9 +90,9 @@ Context:
     if extra_context:
         base_ctx = base_ctx + "\n\nExtra context:\n" + extra_context.strip()
 
-    t1 = Task(description=base_ctx + "\n\n" + p.tasks.soc_analysis_suffix, expected_output="Risk assessment + pattern classification", agent=analyst)
-    t2 = Task(description=base_ctx + "\n\n" + p.tasks.threat_research_suffix, expected_output="MITRE technique + Kaspersky link", agent=researcher)
-    t3 = Task(description=base_ctx + "\n\n" + p.tasks.telegram_report_suffix, expected_output="Telegram-ready text", agent=dispatcher)
+    t1 = Task(description=base_ctx + "\n\n" + p.tasks.soc_analysis_suffix, expected_output=p.tasks.expected_output_analyst, agent=analyst)
+    t2 = Task(description=base_ctx + "\n\n" + p.tasks.threat_research_suffix, expected_output=p.tasks.expected_output_researcher, agent=researcher)
+    t3 = Task(description=base_ctx + "\n\n" + p.tasks.telegram_report_suffix, expected_output=p.tasks.expected_output_dispatcher, agent=dispatcher)
 
     crew = Crew(agents=[analyst, researcher, dispatcher], tasks=[t1, t2, t3], verbose=False)
     result = crew.kickoff()

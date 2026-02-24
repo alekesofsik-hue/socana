@@ -17,6 +17,9 @@ class TaskPrompts:
     soc_analysis_suffix: str
     threat_research_suffix: str
     telegram_report_suffix: str
+    expected_output_analyst: str
+    expected_output_researcher: str
+    expected_output_dispatcher: str
 
 
 @dataclass(frozen=True)
@@ -59,6 +62,22 @@ def default_prompts() -> Prompts:
             soc_analysis_suffix="SOC analysis:",
             threat_research_suffix="Threat research (only if HIGH/CRITICAL):",
             telegram_report_suffix="Telegram report:",
+            expected_output_analyst=(
+                "Краткий технический разбор: статус угрозы (Blocked/Active), "
+                "уровень риска (LOW/MEDIUM/HIGH/CRITICAL), список затронутых сущностей "
+                "и логическое обоснование вердикта (2-3 предложения)."
+            ),
+            expected_output_researcher=(
+                "Код техники MITRE ATT&CK, краткое описание поведения угрозы "
+                "и прямые ссылки на Kaspersky Securelist / Encyclopedia. "
+                "Если риск LOW/MEDIUM — одна строка: 'Дополнительное исследование не требуется.'"
+            ),
+            expected_output_dispatcher=(
+                "Готовый текст для отправки в Telegram: первая строка "
+                "🔴/🟡/🟢 | <RISK> | <event_type> | <device>, "
+                "далее блоки Статус, Анализ, Артефакты, Threat Intel, Рекомендации. "
+                "Только Markdown, не более 30 строк."
+            ),
         ),
     )
 
@@ -109,10 +128,16 @@ def _parse_prompts(data: dict[str, Any], fallback: Prompts) -> Prompts:
         soc = _g(data, "tasks", "soc_analysis_suffix") or fb.soc_analysis_suffix
         thr = _g(data, "tasks", "threat_research_suffix") or fb.threat_research_suffix
         tg = _g(data, "tasks", "telegram_report_suffix") or fb.telegram_report_suffix
+        eo_analyst = _g(data, "tasks", "expected_output_analyst") or fb.expected_output_analyst
+        eo_researcher = _g(data, "tasks", "expected_output_researcher") or fb.expected_output_researcher
+        eo_dispatcher = _g(data, "tasks", "expected_output_dispatcher") or fb.expected_output_dispatcher
         return TaskPrompts(
             soc_analysis_suffix=str(soc),
             threat_research_suffix=str(thr),
             telegram_report_suffix=str(tg),
+            expected_output_analyst=str(eo_analyst),
+            expected_output_researcher=str(eo_researcher),
+            expected_output_dispatcher=str(eo_dispatcher),
         )
 
     return Prompts(
